@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, defineEmits } from 'vue'
+import { ref, watch } from 'vue'
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions } from '@headlessui/vue'
 import { CheckIcon, CreditCardIcon, SelectorIcon, } from '@heroicons/vue/solid'
 import { KeyIcon } from '@heroicons/vue/outline'

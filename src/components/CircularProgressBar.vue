@@ -1,6 +1,23 @@
 <template>
-  <div class="progressbar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="--value:40"></div>
+  <div
+    class="progressbar"
+    role="progressbar"
+    :aria-valuenow="current"
+    :aria-valuemin="min"
+    :aria-valuemax="max"
+    :style="`--value:${current}`"
+  />
 </template>
+
+<script setup lang="ts">
+
+defineProps({
+  max: { type: Number, default: 100 },
+  min: { type: Number, default: 0 },
+  current: { type: Number }
+})
+
+</script>
 
 <style scoped>
 /** https://dev.to/alvaromontoro/comment/1j2o1 */
