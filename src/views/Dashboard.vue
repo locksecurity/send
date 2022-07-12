@@ -90,18 +90,20 @@
                   </p>
                 </div>
                 <div class="text-xs md:text-sm">
-                  <button type="button" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm font-medium rounded text-gray-700 bg-white md:px-3 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">Cancel</button>
+                  <button type="button" @click="cancelUpload" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm font-medium rounded text-gray-700 bg-white md:px-3 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">Cancel</button>
                 </div>
               </div>
             </div>
 
             <div v-show="completed" class="">
-              <h3 class="text-gray-800 text-2xl font-medium">
+              <h3 class="text-gray-800 text-2xl font-medium text-center">
                 Your upload is ready! 🎉
               </h3>
 
-              <p class="mt-6 text-gray-600">
-                The link to your file expires in 24 hours.
+              <p class="mt-6 text-gray-600 text-center">
+                The link to your file
+                <span class="font-semibold">{{ filename }}</span>
+                expires in 24 hours.
               </p>
 
               <div class="mt-12">
@@ -166,6 +168,11 @@ export default defineComponent({
     working: false,
     uploading: false,
     completed: false,
+
+    uploadRequest: <{
+      cancel: () => void
+      result: Promise<{ duration: number }>
+    } | null> null,
 
     downloadUrl: <string|null> null,
   }),
@@ -251,7 +258,7 @@ export default defineComponent({
       const totalSize = encrytedFile.file.size
       const encStream = sliceStream(encrytedFile.file.stream(), new StreamSlicer(), () => {})
 
-      const uploadRequest = api.uploadWs(
+      this.uploadRequest = api.uploadWs(
         id,
         encStream,
         (p: number) => {
@@ -261,10 +268,9 @@ export default defineComponent({
       )
       this.uploading = true
 
-
       // show download link including secret key
       try {
-        await uploadRequest.result
+        await this.uploadRequest.result
         this.progress = [totalSize, totalSize]
         this.downloadUrl = window.location.origin + `/download/${id}?#${prep.secret}`
 
@@ -363,7 +369,13 @@ export default defineComponent({
 
       this.progress = [0, 0]
       this.downloadUrl = null
-    }
+      this.uploadRequest = null
+    },
+
+    cancelUpload(): void {
+      this.uploadRequest?.cancel()
+      this.reset()
+    },
 
     //
   }

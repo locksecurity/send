@@ -71,7 +71,6 @@ async function upload(
     const reader = stream.getReader();
     let state = await reader.read();
     while (!state.done) {
-      console.log(state.done)
       if (canceller.cancelled) {
         ws.close();
       }
@@ -97,7 +96,7 @@ async function upload(
 
     await completedResponse;
     return { duration: Date.now() - start };
-  } catch (e) {
+  } catch (e: any) {
     e.size = size;
     e.duration = Date.now() - start;
     throw e;
