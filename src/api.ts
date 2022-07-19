@@ -61,7 +61,7 @@ async function upload(
   const host = window.location.hostname;
   const port = 8080;
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-  const endpoint = `${protocol}//${host}${port ? ':' : ''}${port}/upload/${id}`;
+  const endpoint = `${protocol}//${host}${port ? ':' : ''}${port}/ws/upload/${id}`;
 
   const ws = await asyncInitWebSocket(endpoint);
 

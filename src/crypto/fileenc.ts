@@ -1,4 +1,10 @@
 
+export function buf2hex(buffer: ArrayBuffer) {
+  return [...new Uint8Array(buffer)]
+    .map(x => x.toString(16).padStart(2, '0'))
+    .join('')
+}
+
 export function blobToArrayBuffer(blob: Blob): Promise<ProgressEvent<FileReader>> {
   const fileReader = new FileReader();
 
@@ -14,7 +20,7 @@ function arrayBufferToBlob(ab: ArrayBuffer): Blob {
     return new window.Blob([new Uint8Array(ab)]);
 }
 
-function base64ToArrayBuffer(base64: string) {
+export function base64ToArrayBuffer(base64: string) {
     var binary_string = window.atob(base64);
     var len = binary_string.length;
     var bytes = new Uint8Array(len);

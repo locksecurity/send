@@ -118,7 +118,7 @@
                       class="focus:ring-blue-500 focus:border-blue-500 block w-full rounded-none rounded-l-md border-gray-300"
                     />
                   </div>
-                  <button type="button" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                  <button @click="copyDownloadLink" type="button" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                     <ClipboardCopyIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
                     <span>Copy</span>
                   </button>
@@ -148,6 +148,7 @@ import * as filenc from '@/crypto/fileenc'
 import * as api from '@/api'
 import { sliceStream, StreamSlicer } from '@/streans'
 import CircularProgressBar from '../components/CircularProgressBar.vue'
+import { copyToClipboard } from '@/copy';
 
 const apiRoot = import.meta.env.VITE_API_URL
 
@@ -356,9 +357,7 @@ export default defineComponent({
       }
     },
 
-    getFileSize(bytes: number): string {
-      return getFileSize(bytes)
-    },
+    getFileSize: (bytes: number) => getFileSize(bytes),
 
     reset(): void {
       this.showPreview
@@ -376,6 +375,10 @@ export default defineComponent({
       this.uploadRequest?.cancel()
       this.reset()
     },
+
+    copyDownloadLink(): void {
+      copyToClipboard(<string>this.downloadUrl)
+    }
 
     //
   }

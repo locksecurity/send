@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 import HomeView from '../views/HomeView.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import AddSecret from '@/views/AddSecret/AddSecret.vue'
+import Download from '@/views/Download.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +13,12 @@ const router = createRouter({
       name: 'dashboard',
       meta: { requiresAuth: false },
       component: Dashboard
+    },
+    {
+      path: '/download/:id',
+      name: 'download',
+      meta: { requiresAuth: false },
+      component: Download
     },
     {
       path: '/new',
