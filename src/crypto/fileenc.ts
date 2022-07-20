@@ -138,3 +138,14 @@ export async function encrypt(input: ArrayBuffer, key: CryptoKey) {
     iv,
   }
 }
+
+export async function decryptFile(file: Blob, key: CryptoKey, iv: ArrayBuffer) {
+console.log('before: ', await file.arrayBuffer())
+  const cipher = (await blobToArrayBuffer(file)).target?.result
+console.log(key)
+console.log(cipher)
+  return window.crypto.subtle.decrypt(
+    { name: 'AES-GCM', iv }, key, <ArrayBuffer>cipher
+  )
+    .then(result => arrayBufferToBlob(result))
+}

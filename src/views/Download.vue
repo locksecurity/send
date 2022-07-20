@@ -30,7 +30,8 @@
       <div class="mt-12">
         <button
           class="w-full py-3 rounded text-center bg-blue-700 text-gray-100 font-semibold"
-          type="submit"
+          type="button"
+          @click="downloadFile"
         >
           Download
         </button>
@@ -58,8 +59,15 @@ export default defineComponent({
         type: string,
         size: number
       } | null> null,
-      token: <string|null> null,
+      authToken: <string|null> null,
       baseKey: <CryptoKey|null> null,
+
+      file: <{
+        salt: Array<number>,
+        iv: Array<number>
+      }> {},
+
+      uploadId: <string|null> null,
     })
   },
 
@@ -113,7 +121,7 @@ export default defineComponent({
       return
     }
 
-    const { token, meta } = await auth.json()
+    const { token, meta, file } = await auth.json()
     const metaKey = await filenc.deriveAesGcm256Key(baseKey, Uint32Array.from(meta.salt))
     const decMeta = await crypto.subtle.decrypt(
       { name: 'AES-GCM', iv: Uint32Array.from(meta.iv) },
@@ -124,7 +132,9 @@ export default defineComponent({
     const decoder = new TextDecoder()
     this.meta = JSON.parse(decoder.decode(decMeta))
     this.baseKey = baseKey
-    this.token = token
+    this.authToken = token
+    this.file = file
+    this.uploadId = id
     this.working = false
   },
 
@@ -139,6 +149,55 @@ export default defineComponent({
         true,
         ['deriveKey']
       )
+    },
+
+    async downloadFile() {
+      const fileKey = await filenc.deriveAesGcm256Key(
+        <CryptoKey>this.baseKey,
+        Uint32Array.from(this.file.salt)
+      )
+
+      fetch(`${apiRoot}/downloads/${this.uploadId}`, {
+        headers: { Authorization: 'Bearer ' + this.authToken }
+      })
+        .then(response => {
+          if (!response.ok) {
+            alert('Error downloading file.')
+            return
+          }
+          return response.blob()
+        })
+        .then(blob => {
+//console.log('from api ->', blob)
+//          const cipherSize = <number>this.meta?.size + 16
+//          const start = <number>blob?.size - cipherSize
+//          const cipher = blob?.slice(start/** as per zero-index */)
+//console.log('starting at', start)*/
+          return filenc.decryptFile(
+            <Blob>blob,
+            fileKey,
+            Uint32Array.from(this.file.iv)
+          )
+        })
+        .then(file => {
+          const link = document.createElement('a')
+
+          link.style.display = 'none'
+          link.href = URL.createObjectURL(file)
+          link.download = this.meta?.name as string
+
+          // It needs to be added to the DOM so it can be clicked
+          document.body.appendChild(link)
+          link.click()
+
+          // To make this work on Firefox we need to wait
+          // a little while before removing it.
+          setTimeout(() => {
+            URL.revokeObjectURL(link.href)
+            link.parentNode?.removeChild(link)
+          }, 5000)
+        })
+        .catch(e => console.error(e))
     },
 
     getFileSize: (bytes: number) => getFileSize(bytes)

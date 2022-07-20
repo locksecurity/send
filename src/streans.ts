@@ -47,7 +47,7 @@ export class StreamSlicer {
         i += this.chunkSize;
         this.send(record, controller);
       } else {
-        console.log('Chunk left -> ', chunk)
+        // console.log('Chunk left -> ', chunk)
         const end = chunk.slice(i, i + remainingBytes);
         i += end.byteLength;
         this.partialChunk.set(end);

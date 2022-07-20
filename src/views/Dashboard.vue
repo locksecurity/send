@@ -268,7 +268,7 @@ export default defineComponent({
         }
       )
       this.uploading = true
-
+console.log([file.size, await encrytedFile.file])
       // show download link including secret key
       try {
         await this.uploadRequest.result
@@ -299,7 +299,7 @@ export default defineComponent({
     },
 
     /**
-     * Setup encryption and signing keys to be used in protecting
+     * Setup encryption && signing keys to be used in protecting
      * a new file upload.
      */
     async prepareUpload() {
