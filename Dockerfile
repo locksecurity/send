@@ -8,7 +8,7 @@ RUN yarn run build
 FROM node:16-alpine
 RUN yarn global add serve
 WORKDIR /app
-COPY --from=builder /app/build .
+COPY --from=builder /app/dist .
 
 EXPOSE 80
 
