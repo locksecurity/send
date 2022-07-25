@@ -50,10 +50,13 @@
    - '--port'
    - '80'
    - '--allow-unauthenticated'
+   - '--service-account'
+   - '$_SERVICE_ACCOUNT'
  substitutions:
    _CLOUD_RUN_SERVICE: 'send-app'
    _IMAGE: 'send-app'
    _REGION: 'europe-west1'
+   _SERVICE_ACCOUNT: ''
    _MODE: ''
  images:
  - 'gcr.io/$PROJECT_ID/$_IMAGE:$COMMIT_SHA'
