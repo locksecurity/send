@@ -58,11 +58,16 @@ async function upload(
 ) {
   let size = 0;
   const start = Date.now();
-  const host = window.location.hostname;
-  const port = 8080;
+  const prod = import.meta.env.PROD
+  const host = prod
+    ? (new URL(<string>import.meta.env.VITE_API_URL)).hostname : window.location.hostname
+  const port = prod ? '' : 8080
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   const endpoint = `${protocol}//${host}${port ? ':' : ''}${port}/ws/upload/${id}`;
 
+  if (import.meta.env.PROD) {
+
+  }
   const ws = await asyncInitWebSocket(endpoint);
 
   try {
