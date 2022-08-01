@@ -102,7 +102,7 @@ export default defineComponent({
     const signingKey = await filenc.deriveHmacSigningKey(
       baseKey,
       Uint32Array.from(attempt.signingKey.salt),
-      true
+      false
     )
 
     const signature = await crypto.subtle.sign(
@@ -146,7 +146,7 @@ export default defineComponent({
         'raw',
         encoder.encode(secret),
         'HKDF',
-        true,
+        false,
         ['deriveKey']
       )
     },
