@@ -324,7 +324,7 @@ console.log([file.size, await encrytedFile.file])
         'raw',
         encoder.encode(key.k),
         'HKDF',
-        true,
+        false,
         ['deriveKey']
       )
 
