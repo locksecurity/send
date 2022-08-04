@@ -93,6 +93,8 @@
       <div class="w-full text-center text-xl">Bottom menu here</div>
     </nav>
   </div>
+
+  <live-notification-region/>
 </template>
 
 <script lang="ts" setup>
@@ -100,6 +102,7 @@ import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverP
 import { SearchIcon } from '@heroicons/vue/solid'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import TLogo from '@/components/TLogo.vue'
+import LiveNotificationRegion from '@/components/Notifications/LiveRegion.vue'
 
 const user = {
   name: 'Chelsea Hagon',
