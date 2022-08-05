@@ -28,13 +28,14 @@
       </div>
 
       <div class="mt-12">
-        <button
+        <loadable-button
+          :loading="downloading"
           class="w-full py-3 rounded text-center bg-blue-700 text-gray-100 font-semibold"
           type="button"
           @click="downloadFile"
         >
           Download
-        </button>
+        </loadable-button>
       </div>
     </main>
   </main>
@@ -45,11 +46,13 @@ import { defineComponent } from 'vue'
 import getFileSize from 'filesize'
 import SimpleSpinner from '@/components/SimpleSpinner.vue'
 import * as filenc from '@/crypto/fileenc'
+import LoadableButton from '@/components/LoadableButton.vue'
+import notifier from '@/notifications'
 
 const apiRoot = import.meta.env.VITE_API_URL
 
 export default defineComponent({
-  components: { SimpleSpinner },
+  components: { SimpleSpinner, LoadableButton },
 
   data() {
     return ({
@@ -68,6 +71,7 @@ export default defineComponent({
       }> {},
 
       uploadId: <string|null> null,
+      downloading: false,
     })
   },
 
@@ -157,22 +161,23 @@ export default defineComponent({
         Uint32Array.from(this.file.salt)
       )
 
+      this.downloading = true
       fetch(`${apiRoot}/downloads/${this.uploadId}`, {
         headers: { Authorization: 'Bearer ' + this.authToken }
       })
         .then(response => {
           if (!response.ok) {
-            alert('Error downloading file.')
+            notifier().warning(
+              'We couldn\'t start your download',
+              'Please try again in a few minutes.'
+            )
+
+            this.downloading = false
             return
           }
           return response.blob()
         })
         .then(blob => {
-//console.log('from api ->', blob)
-//          const cipherSize = <number>this.meta?.size + 16
-//          const start = <number>blob?.size - cipherSize
-//          const cipher = blob?.slice(start/** as per zero-index */)
-//console.log('starting at', start)*/
           return filenc.decryptFile(
             <Blob>blob,
             fileKey,
@@ -196,8 +201,18 @@ export default defineComponent({
             URL.revokeObjectURL(link.href)
             link.parentNode?.removeChild(link)
           }, 5000)
+
+          this.downloading = false
         })
-        .catch(e => console.error(e))
+        .catch(e => {
+          notifier().error(
+            'We couldn\'t download your file.',
+            'Please try again.'
+          )
+
+          this.downloading = false
+          console.error(e)
+        })
     },
 
     getFileSize: (bytes: number) => getFileSize(bytes)
