@@ -14,10 +14,6 @@ export const useNotificationsStore = defineStore('notifications', {
     pushCount: 0,
   }),
 
-  getters: {
-    hasUnsent: store => store.queue.length > 0
-  },
-
   actions: {
     /**
      * Enqueue a new notification for display.
