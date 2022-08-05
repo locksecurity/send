@@ -65,9 +65,6 @@ async function upload(
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   const endpoint = `${protocol}//${host}${port ? ':' : ''}${port}/ws/upload/${id}`;
 
-  if (import.meta.env.PROD) {
-
-  }
   const ws = await asyncInitWebSocket(endpoint);
 
   try {

@@ -141,14 +141,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { ViewGridAddIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';
+import { defineComponent } from 'vue'
+import { ViewGridAddIcon, ClipboardCopyIcon } from '@heroicons/vue/outline'
 import getFileSize from 'filesize'
 import * as filenc from '@/crypto/fileenc'
 import * as api from '@/api'
 import { sliceStream, StreamSlicer } from '@/streans'
 import CircularProgressBar from '../components/CircularProgressBar.vue'
-import { copyToClipboard } from '@/copy';
+import { copyToClipboard } from '@/copy'
+import notifier from '@/notifications'
 
 const apiRoot = import.meta.env.VITE_API_URL
 
@@ -193,6 +194,7 @@ export default defineComponent({
       this.filename = f.name
       this.filesize = getFileSize(f.size)
       this.showPreview = true
+
     },
 
     removeFile(): void {
@@ -210,10 +212,12 @@ export default defineComponent({
       const reader = (await filenc.blobToArrayBuffer(file)).target
 
       if (!reader) {
-        alert('There was a problem loading up your file. Please check and try again.')
+        notifier().warning(
+          'There was a problem uploading your file',
+          'Please check and try again.'
+        )
         return
       }
-      //
 
       const prep = await this.prepareUpload()
       this.working = true
@@ -247,7 +251,7 @@ export default defineComponent({
       })
 
       if (!init.ok) {
-        alert('Something went wrong. Please try again.')
+        notifier().warning('Something went wrong', 'Please try again.')
         this.working = false
         return
       }
@@ -259,16 +263,25 @@ export default defineComponent({
       const totalSize = encrytedFile.file.size
       const encStream = sliceStream(encrytedFile.file.stream(), new StreamSlicer(), () => {})
 
-      this.uploadRequest = api.uploadWs(
-        id,
-        encStream,
-        (p: number) => {
-          this.progress = [p, totalSize];
-          console.log(`pushed ${p} out of ${totalSize}`)
-        }
-      )
-      this.uploading = true
-console.log([file.size, await encrytedFile.file])
+      try {
+        this.uploadRequest = api.uploadWs(
+          id,
+          encStream,
+          (p: number) => {
+            this.progress = [p, totalSize];
+            console.log(`pushed ${p} out of ${totalSize}`)
+          }
+        )
+        this.uploading = true
+      } catch (e) {
+        notifier().error('We were unable to start your upload.', 'Please try again.')
+        console.error(e)
+
+        this.uploading = false
+
+        return
+      }
+
       // show download link including secret key
       try {
         await this.uploadRequest.result
@@ -279,7 +292,11 @@ console.log([file.size, await encrytedFile.file])
         this.completed = true
 
       } catch (e) {
-        alert(e)
+        notifier().error(
+          'Something went wrong',
+          'We were unable to complete your upload. Please try again.'
+        )
+
         this.working = this.uploading = false
         return
       }
