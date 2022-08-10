@@ -394,7 +394,14 @@ export default defineComponent({
     },
 
     copyDownloadLink(): void {
-      copyToClipboard(<string>this.downloadUrl)
+      if (copyToClipboard(<string>this.downloadUrl)) {
+        return notifier().success('Link copied!')
+      }
+
+      notifier().warning(
+        'Couldn\'t copy that 😬',
+        'Please try copying the link manually.'
+      )
     }
 
     //
