@@ -1,91 +1,96 @@
 <template>
   <div class="min-h-screen relative bg-gray-50 pb-20">
     <!-- When the mobile menu is open, add `overflow-hidden` to the `body` element to prevent double scrollbars -->
-    <Popover as="template" v-slot="{ open }">
-      <header :class="[open ? 'fixed inset-0 z-40 overflow-y-auto' : '', 'bg-white border-b shadow-sm lg:static lg:overflow-y-visible']">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="relative flex justify-between xl:grid xl:grid-cols-12 lg:gap-8">
-            <div class="flex md:absolute md:left-0 md:inset-y-0 lg:static xl:col-span-2">
-              <div class="flex-shrink-0 flex items-center">
-                <router-link to="/">
-                  <TLogo class="block h-8 w-auto text-emerald-600" alt="Locktor" />
-                </router-link>
+    <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <TLogo class="block lg:hidden h-8 w-auto text-blue-500" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" />
+              <TLogo class="hidden lg:block h-8 w-auto text-blue-500" alt="Workflow" />
+            </div>
+            <div class="hidden sm:block sm:ml-6">
+              <div class="flex space-x-4">
+                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Team</a>
+                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Projects</a>
+                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
               </div>
             </div>
-            <div class="min-w-0 flex-1 md:px-8 lg:px-0 xl:col-span-6">
-              <div class="flex items-center px-6 py-4 md:max-w-3xl md:mx-auto lg:max-w-none lg:mx-0 xl:px-0">
-                <div class="w-full">
-                  <label for="search" class="sr-only">Search</label>
-                  <div class="relative">
-                    <div class="pointer-events-none absolute inset-y-0 left-0 pl-3 flex items-center">
-                      <SearchIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-                    </div>
-                    <input id="search" name="search" class="block w-full bg-white border border-gray-300 rounded-md py-2 pl-10 pr-3 text-sm placeholder-gray-500 focus:outline-none focus:text-gray-900 focus:placeholder-gray-400 focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" placeholder="Find anything..." type="search" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center md:absolute md:right-0 md:inset-y-0 lg:hidden">
-              <!-- Mobile menu button -->
-              <PopoverButton class="-mx-2 rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-emerald-500">
-                <span class="sr-only">Open menu</span>
-                <MenuIcon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-                <XIcon v-else class="block h-6 w-6" aria-hidden="true" />
-              </PopoverButton>
-            </div>
-            <div class="hidden lg:flex lg:items-center lg:justify-end xl:col-span-4">
-              <a href="#" class="ml-5 flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+          </div>
+          <div class="hidden sm:ml-6 sm:block">
+            <div class="flex items-center">
+              <button type="button" class="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                 <span class="sr-only">View notifications</span>
                 <BellIcon class="h-6 w-6" aria-hidden="true" />
-              </a>
+              </button>
 
               <!-- Profile dropdown -->
-              <Menu as="div" class="flex-shrink-0 relative ml-5">
+              <Menu as="div" class="ml-3 relative">
                 <div>
-                  <MenuButton class="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                  <MenuButton class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                     <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full" :src="user.imageUrl" alt="" />
+                    <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                   </MenuButton>
                 </div>
                 <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                  <MenuItems class="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1 focus:outline-none">
-                    <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                      <a :href="item.href" :class="[active ? 'bg-gray-100' : '', 'block py-2 px-4 text-sm text-gray-700']">{{ item.name }}</a>
+                  <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <MenuItem v-slot="{ active }">
+                      <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Your Profile</a>
+                    </MenuItem>
+                    <MenuItem v-slot="{ active }">
+                      <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
+                    </MenuItem>
+                    <MenuItem v-slot="{ active }">
+                      <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</a>
                     </MenuItem>
                   </MenuItems>
                 </transition>
               </Menu>
-
-              <a href="#" class="ml-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"> New Secret </a>
             </div>
+          </div>
+          <div class="-mr-2 flex sm:hidden">
+            <!-- Mobile menu button -->
+            <DisclosureButton class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+              <span class="sr-only">Open main menu</span>
+              <MenuIcon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
+              <XIcon v-else class="block h-6 w-6" aria-hidden="true" />
+            </DisclosureButton>
           </div>
         </div>
+      </div>
 
-        <PopoverPanel as="nav" class="lg:hidden" aria-label="Global">
-          <div class="max-w-3xl mx-auto px-2 pt-2 pb-3 space-y-1 sm:px-4">
-            <a v-for="item in navigation" :key="item.name" :href="item.href" :aria-current="item.current ? 'page' : undefined" :class="[item.current ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-50', 'block rounded-md py-2 px-3 text-base font-medium']">{{ item.name }}</a>
-          </div>
-          <div class="border-t border-gray-200 pt-4 pb-3">
-            <div class="max-w-3xl mx-auto px-4 flex items-center sm:px-6">
-              <div class="flex-shrink-0">
-                <img class="h-10 w-10 rounded-full" :src="user.imageUrl" alt="" />
-              </div>
-              <div class="ml-3">
-                <div class="text-base font-medium text-gray-800">{{ user.name }}</div>
-                <div class="text-sm font-medium text-gray-500">{{ user.email }}</div>
-              </div>
-              <button type="button" class="ml-auto flex-shrink-0 bg-white rounded-full p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
-                <span class="sr-only">View notifications</span>
-                <BellIcon class="h-6 w-6" aria-hidden="true" />
-              </button>
+      <DisclosurePanel class="sm:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+          <DisclosureButton as="a" href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">Dashboard</DisclosureButton>
+          <DisclosureButton as="a" href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Team</DisclosureButton>
+          <DisclosureButton as="a" href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</DisclosureButton>
+          <DisclosureButton as="a" href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Calendar</DisclosureButton>
+        </div>
+        <div class="pt-4 pb-3 border-t border-gray-700">
+          <div class="flex items-center px-5">
+            <div class="flex-shrink-0">
+              <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
             </div>
-            <div class="mt-3 max-w-3xl mx-auto px-2 space-y-1 sm:px-4">
-              <a v-for="item in userNavigation" :key="item.name" :href="item.href" class="block rounded-md py-2 px-3 text-base font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900">{{ item.name }}</a>
+            <div class="ml-3">
+              <div class="text-base font-medium text-white">Tom Cook</div>
+              <div class="text-sm font-medium text-gray-400">tom@example.com</div>
             </div>
+            <button type="button" class="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+              <span class="sr-only">View notifications</span>
+              <BellIcon class="h-6 w-6" aria-hidden="true" />
+            </button>
           </div>
-        </PopoverPanel>
-      </header>
-    </Popover>
+          <div class="mt-3 px-2 space-y-1">
+            <DisclosureButton as="a" href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Your Profile</DisclosureButton>
+            <DisclosureButton as="a" href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Settings</DisclosureButton>
+            <DisclosureButton as="a" href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Sign out</DisclosureButton>
+          </div>
+        </div>
+      </DisclosurePanel>
+    </Disclosure>
 
     <slot/>
 
@@ -98,8 +103,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
-import { SearchIcon } from '@heroicons/vue/solid'
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import TLogo from '@/components/TLogo.vue'
 import LiveNotificationRegion from '@/components/Notifications/LiveRegion.vue'
