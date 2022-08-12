@@ -23,7 +23,7 @@
                     </label>
                     <p class="pl-1 hidden">or drag and drop</p>
                   </div>
-                  <p class="text-sm text-gray-500">Any format, up to 50MB</p>
+                  <p class="text-sm text-gray-500">Any format, up to 2GB</p>
                 </div>
               </div>
             </div>
@@ -61,14 +61,14 @@
 
               <div class="pt-8">
                 <div class="mt-4">
-                  <button
-                    :disabled="working"
-                    :class="[working ? 'bg-gray-300' : 'bg-blue-700']"
-                    class="w-full py-3 rounded text-center text-gray-100 font-semibold"
+                  <LoadableButton
+                    :loading="working"
+                    class="w-full py-3 inline-flex items-center justify-center rounded text-center text-gray-100 bg-blue-700 font-semibold"
                     type="submit"
                   >
-                    Encrypt &amp; upload
-                  </button>
+                    <LockClosedIcon class="w-5 h-auto mr-2" />
+                    <span>Secure Upload</span>
+                  </LoadableButton>
                 </div>
               </div>
             </div>
@@ -143,22 +143,27 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { ViewGridAddIcon, ClipboardCopyIcon } from '@heroicons/vue/outline'
+import { LockClosedIcon } from '@heroicons/vue/solid'
 import getFileSize from 'filesize'
 import * as filenc from '@/crypto/fileenc'
 import * as api from '@/api'
 import { sliceStream, StreamSlicer } from '@/streans'
-import CircularProgressBar from '../components/CircularProgressBar.vue'
+import CircularProgressBar from '@/components/CircularProgressBar.vue'
+import LoadableButton from '@/components/LoadableButton.vue'
 import { copyToClipboard } from '@/copy'
 import notifier from '@/notifications'
 
 const apiRoot = import.meta.env.VITE_API_URL
+const MAX_SIZE = 2147483632 // 2GiB minus 16 bytes
 
 export default defineComponent({
   components: {
     ViewGridAddIcon,
     CircularProgressBar,
     ClipboardCopyIcon,
-  },
+    LockClosedIcon,
+    LoadableButton
+},
 
   data: () => ({
     filename: '',
@@ -209,6 +214,18 @@ export default defineComponent({
 
       if (!files) return
       const file = files[0]
+
+      this.working = true
+      if (file.size > MAX_SIZE) {
+        notifier().warning(
+          'That\'s a bit too large',
+          'Please select a file 2GB or less and try again.'
+        )
+
+        this.working = false
+        return
+      }
+
       const reader = (await filenc.blobToArrayBuffer(file)).target
 
       if (!reader) {
@@ -216,11 +233,13 @@ export default defineComponent({
           'There was a problem uploading your file',
           'Please check and try again.'
         )
+
+        this.working = false
         return
       }
 
+
       const prep = await this.prepareUpload()
-      this.working = true
 
       // encrypt file
       const encrytedFile = await filenc.encryptFile(
