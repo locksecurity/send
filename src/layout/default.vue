@@ -5,17 +5,22 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <TLogo class="block lg:hidden h-8 w-auto text-blue-500" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" />
-              <TLogo class="hidden lg:block h-8 w-auto text-blue-500" alt="Workflow" />
-            </div>
+            <router-link to="/" class="flex-shrink-0">
+              <TLogo class="block lg:hidden h-8 w-auto text-blue-500" alt="Locksend" />
+              <TLogo class="hidden lg:block h-8 w-auto text-blue-500" alt="Locksend" />
+            </router-link>
             <div class="hidden sm:block sm:ml-6">
               <div class="flex space-x-4">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="#" class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Team</a>
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Projects</a>
-                <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
+                <router-link
+                  v-for="nav, k in navigation"
+                  :key="k"
+                  :to="nav.href"
+                  active-class="bg-gray-900 text-white"
+                  class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  {{ nav.name }}
+                </router-link>
               </div>
             </div>
           </div>
@@ -64,10 +69,16 @@
       <DisclosurePanel class="sm:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1">
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <DisclosureButton as="a" href="#" class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium">Dashboard</DisclosureButton>
-          <DisclosureButton as="a" href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Team</DisclosureButton>
-          <DisclosureButton as="a" href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Projects</DisclosureButton>
-          <DisclosureButton as="a" href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Calendar</DisclosureButton>
+          <DisclosureButton
+            v-for="nav, k in navigation"
+            :as="RouterLink"
+            :key="k"
+            :to="nav.href"
+            active-class="bg-gray-900 text-white"
+            class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            {{ nav.name }}
+          </DisclosureButton>
         </div>
         <div class="pt-4 pb-3 border-t border-gray-700">
           <div class="flex items-center px-5">
@@ -103,6 +114,7 @@
 </template>
 
 <script lang="ts" setup>
+import { RouterLink } from 'vue-router'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import TLogo from '@/components/TLogo.vue'
@@ -115,10 +127,8 @@ const user = {
     'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Calendar', href: '#', current: false },
-  { name: 'Teams', href: '#', current: false },
-  { name: 'Directory', href: '#', current: false },
+  { name: 'upload', href: '/', },
+  { name: 'settings', href: '/account' },
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
