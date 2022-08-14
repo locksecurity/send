@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { getCurrentUser } from '@/auth/firebase'
 import HomeView from '../views/HomeView.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import AddSecret from '@/views/AddSecret/AddSecret.vue'
@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'dashboard',
-      meta: { requiresAuth: false },
+      meta: { requiresAuth: true },
       component: Dashboard
     },
     {
@@ -65,19 +65,22 @@ router.beforeEach((to, from, next) => {
     return next()
   }
 
-  // if it needs guarding tho, we guard
-  const authStore = useAuthStore()
-  const someonesLoggedIn = authStore.signedIn;
+  // if it needs guarding tho, we'll let Cloud Identity load up its
+  // initial (authentication) state before we make our decision.
+  getCurrentUser()
+    .then(user => {
+      const someonesLoggedIn = user !== null;
 
-  if (guestOnly && someonesLoggedIn) {
-    return next('/')
-  }
+      if (guestOnly && someonesLoggedIn) {
+        return next('/')
+      }
 
-  if (requiresAuth && !someonesLoggedIn) {
-    return next('/login')
-  }
+      if (requiresAuth && !someonesLoggedIn) {
+        return next('/login')
+      }
 
-  return next();
+      return next();
+    })
 })
 
 export default router

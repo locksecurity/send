@@ -86,8 +86,8 @@
               <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
             </div>
             <div class="ml-3">
-              <div class="text-base font-medium text-white">Tom Cook</div>
-              <div class="text-sm font-medium text-gray-400">tom@example.com</div>
+              <div class="text-base font-medium text-white">{{ user ? user.displayName : '' }}</div>
+              <div class="text-sm font-medium text-gray-400">{{ user ? user.email : '' }}</div>
             </div>
             <button type="button" class="ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
               <span class="sr-only">View notifications</span>
@@ -119,13 +119,8 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import TLogo from '@/components/TLogo.vue'
 import LiveNotificationRegion from '@/components/Notifications/LiveRegion.vue'
+import { useAuthStore } from '../stores/auth'
 
-const user = {
-  name: 'Chelsea Hagon',
-  email: 'chelsea.hagon@example.com',
-  imageUrl:
-    'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
 const navigation = [
   { name: 'upload', href: '/', },
   { name: 'settings', href: '/account' },
@@ -135,4 +130,7 @@ const userNavigation = [
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
 ]
+
+const user = useAuthStore().user
+
 </script>
