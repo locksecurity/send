@@ -8,12 +8,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { RouterView } from 'vue-router';
-import DefaultLayout from './layout/default.vue';
-import AuthLayout from './layout/auth.vue';
-import AuthenticatedView from './AuthenticatedView.vue';
-import { auth } from './auth/firebase';
-import { useAuthStore } from './stores/auth';
+import { RouterView } from 'vue-router'
+import DefaultLayout from './layout/default.vue'
+import AuthLayout from './layout/auth.vue'
+import AuthenticatedView from './AuthenticatedView.vue'
+import { auth } from './auth/firebase'
+import { useAuthStore } from './stores/auth'
 
 export default defineComponent({
   components: {
@@ -25,7 +25,7 @@ export default defineComponent({
 
   computed: {
     layout(): string {
-      const name = this.$route.meta.layout || 'default';
+      const name = this.$route.meta.layout || 'default'
 
       return name + '-layout'
     },

@@ -48,7 +48,7 @@
                       <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
                     </MenuItem>
                     <MenuItem v-slot="{ active }">
-                      <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</a>
+                      <a href="#" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']" @click.prevent="signOut">Sign out</a>
                     </MenuItem>
                   </MenuItems>
                 </transition>
@@ -97,7 +97,12 @@
           <div class="mt-3 px-2 space-y-1">
             <DisclosureButton as="a" href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Your Profile</DisclosureButton>
             <DisclosureButton as="a" href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Settings</DisclosureButton>
-            <DisclosureButton as="a" href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Sign out</DisclosureButton>
+            <DisclosureButton
+              as="a"
+              href="#"
+              class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
+              @click.prevent="signOut"
+            >Sign out</DisclosureButton>
           </div>
         </div>
       </DisclosurePanel>
@@ -114,12 +119,13 @@
 </template>
 
 <script lang="ts" setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import TLogo from '@/components/TLogo.vue'
 import LiveNotificationRegion from '@/components/Notifications/LiveRegion.vue'
 import { useAuthStore } from '../stores/auth'
+import { auth } from '@/auth/firebase'
 
 const navigation = [
   { name: 'upload', href: '/', },
@@ -132,5 +138,10 @@ const userNavigation = [
 ]
 
 const user = useAuthStore().user
+
+const signOut = async () => {
+  auth.signOut()
+  window.location = '/login' as string & Location
+}
 
 </script>
