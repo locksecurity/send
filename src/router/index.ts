@@ -2,18 +2,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { getCurrentUser } from '@/auth/firebase'
 import HomeView from '../views/HomeView.vue'
 import Dashboard from '@/views/Dashboard.vue'
-import AddSecret from '@/views/AddSecret/AddSecret.vue'
 import Download from '@/views/Download.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      name: 'dashboard',
-      meta: { requiresAuth: true },
-      component: Dashboard
-    },
     {
       path: '/download/:id',
       name: 'download',
@@ -21,18 +14,16 @@ const router = createRouter({
       component: Download
     },
     {
-      path: '/new',
-      name: 'add-secret',
+      path: '/',
+      name: 'dashboard',
       meta: { requiresAuth: true },
-      component: AddSecret
+      component: Dashboard
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      path: '/plans/choose',
+      name: 'choose-plan',
+      meta: { requiresAuth: true },
+      component: () => import('../views/ChoosePlan.vue')
     },
     {
       path: '/register',
