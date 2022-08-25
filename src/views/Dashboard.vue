@@ -1,4 +1,24 @@
 <template>
+  <div v-if="noActiveSubscription" class="relative bg-amber-100">
+    <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+      <div class="pr-16 sm:text-center sm:px-16">
+        <p class="font-medium text-amber-800">
+          <span class="md:hidden"> Some features may not work as you have no active subscription. </span>
+          <span class="hidden md:inline"> Some features may not work as you have no active subscription. </span>
+          <span class="block sm:ml-2 sm:inline-block">
+            <router-link to="/plans/choose" class="text-amber-800 font-bold underline"> Choose a plan <span aria-hidden="true">&rarr;</span></router-link>
+          </span>
+        </p>
+      </div>
+      <div class="absolute inset-y-0 right-0 pt-1 pr-1 flex items-start sm:pt-1 sm:pr-2 sm:items-start">
+        <button type="button" class="flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white">
+          <span class="sr-only">Dismiss</span>
+          <XIcon class="h-6 w-6 text-white" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  </div>
+
   <main class="p-4">
     <div class="mt-12">
       <form @submit.prevent="uploadFile" class="w-full max-w-lg mx-auto" action="#" method="POST">
@@ -142,7 +162,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ViewGridAddIcon, ClipboardCopyIcon } from '@heroicons/vue/outline'
+import { ViewGridAddIcon, ClipboardCopyIcon, XIcon } from '@heroicons/vue/outline'
 import { LockClosedIcon } from '@heroicons/vue/solid'
 import getFileSize from 'filesize'
 import * as filenc from '@/crypto/fileenc'
@@ -163,8 +183,11 @@ export default defineComponent({
     CircularProgressBar,
     ClipboardCopyIcon,
     LockClosedIcon,
-    LoadableButton
-},
+    LoadableButton,
+    XIcon
+  },
+
+  inject: ['session'],
 
   data: () => ({
     filename: '',
@@ -186,7 +209,14 @@ export default defineComponent({
   }),
 
   computed: {
-    noVaults: () => true,
+    noActiveSubscription() {
+      const session = (<any>this).session
+      if (!session || !session.subscription) {
+        return true
+      }
+
+      return Date.now() > (session.subscription.expires * 1000)
+    }
   },
 
   methods: {
@@ -327,12 +357,12 @@ export default defineComponent({
      *
      * @param {object} body
      */
-    registerUpload(body: object) {
+    async registerUpload(body: object) {
       const { token } = useAuthStore()
 
       return fetch(`${apiRoot}/uploads/prepare`, {
         method: 'post',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await token}` },
         body: JSON.stringify(body)
       })
     },

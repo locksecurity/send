@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: <string|null> null,
     user: <User|null> null,
   }),
 
@@ -15,11 +14,11 @@ export const useAuthStore = defineStore('auth', {
      */
     setUser(user: User|null) {
       this.user = user
-      this.token = user ? (user as any).accessToken : null
     },
   },
 
   getters: {
-    signedIn: (store): boolean => store.token !== null
+    token: (store): Promise<string>|undefined => store.user?.getIdToken(),
+    signedIn: (store): boolean => store.user !== null
   }
 })

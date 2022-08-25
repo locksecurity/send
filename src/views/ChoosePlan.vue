@@ -86,6 +86,8 @@ const apiRoot = import.meta.env.VITE_API_URL
 export default defineComponent({
   components: { CheckIcon, LoadableButton },
 
+  inject: ['loadSession'],
+
   beforeMount() {
     if (this.paystackScriptIsAbsent()) {
       this.togglePaystackScript()
@@ -201,7 +203,7 @@ export default defineComponent({
       const auth = useAuthStore()
       const check = await fetch(`${apiRoot}/billing/start/${res.reference}`, {
         method: 'post',
-        headers: { 'Authorization': `Bearer ${auth.token}` },
+        headers: { 'Authorization': `Bearer ${await auth.token}` },
       })
 
       if (!check.ok) {
@@ -213,11 +215,17 @@ export default defineComponent({
         )
       }
 
-      notifier().success(
-        'Thank You! 🎉',
-        'Happy end-to-end encrypted sharing!'
-      )
-      this.$router.push('/')
+      try {
+        await (<any>this).loadSession()
+
+        notifier().success(
+          'Thank You! 🎉',
+          'Happy encrypted sharing!'
+        )
+        this.$router.push('/')
+      } catch (e) {
+        window.location = <Location & string>'/'
+      }
     },
   }
 })

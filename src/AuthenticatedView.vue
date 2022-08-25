@@ -16,6 +16,8 @@ import DefaultLayout from '@/layout/default.vue'
 import SimpleSpinner from './components/SimpleSpinner.vue'
 // import { $fetch } from './api-client'
 
+const apiRoot = import.meta.env.VITE_API_URL
+
 export default defineComponent({
   components: { RouterView, DefaultLayout, SimpleSpinner },
   props: {
@@ -34,42 +36,55 @@ export default defineComponent({
   provide() {
     return {
       session: computed(() => this.session),
-
-      logout: this.logout
+      loadSession: this.loadSession,
     }
   },
 
   async created() {
-    const user = getCurrentUser()
+    const user = await getCurrentUser()
 
     if (user === null) {
-      return;
+      return
     }
     if (this.session !== null) {
-      this.loading = false;
+      this.loading = false
       return
     }
 
-//    $fetch('/auth/session', { retry: 1 })
-//      .then(body => {
-//        this.session = body;
-//        this.loading = false
-//      })
-//      .catch(error => {
-//        /**
-//         * this is probably a real problem
-//         * @todo halt proceedings and/or try again.
-//         */
-//        console.error('Failed to load session info!', error)
-//        return
-//      })
-this.loading = false
+    try {
+      this.loadSession()
+    } catch(e) {
+      /**
+       * this is probably a real problem
+       * @todo halt proceedings and/or try again.
+       */
+      console.error('Failed to load session info!', e)
+      return
+    }
   },
 
   methods: {
     logout() {
       auth.signOut()
       this.session = null
+    },
+
+    async loadSession() {
+      const user = await getCurrentUser()
+
+      return fetch(`${apiRoot}/auth/session`, {
+        headers: { Authorization: `Bearer ${await user?.getIdToken()}` }
+      })
+        .then(res => {
+          if (res.ok) {
+            return res.json()
+          }
+          // session pull failed. What next?
+        })
+        .then(body => {
+          this.session = body
+          this.loading = false
+        })
     }
   }
 })
