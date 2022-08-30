@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { getCurrentUser } from '@/auth/firebase'
-import HomeView from '../views/HomeView.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import Download from '@/views/Download.vue'
 
@@ -24,6 +23,12 @@ const router = createRouter({
       name: 'choose-plan',
       meta: { requiresAuth: true },
       component: () => import('../views/ChoosePlan.vue')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      meta: { requiresAuth: true },
+      component: () => import('../views/Settings.vue')
     },
     {
       path: '/register',
