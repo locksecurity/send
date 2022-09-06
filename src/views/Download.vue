@@ -4,6 +4,12 @@
   </div>
 
   <main v-else class="w-full max-w-lg mx-auto p-4">
+    <div class="min-h-full flex flex-col justify-center pb-8 sm:px-6 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <img src="/img/icon.svg" class="mx-auto h-12 w-auto text-blue-500" alt="Locksend" />
+      </div>
+    </div>
+
     <header class="text-2xl text-gray-800 font-semibold">
       <h2 class="text-center">Download file</h2>
     </header>
