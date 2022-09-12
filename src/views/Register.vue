@@ -110,7 +110,12 @@ export default defineComponent({
         if (response.ok) {
           try {
             await signInWithEmailAndPassword(auth, this.email, this.password)
-            this.$router.push('/plans/choose')
+
+            notifier().success(
+              'You\'re all signed up',
+              'Happy encrypting!'
+            )
+            this.$router.push('/')
           }
           catch(error) {
             this.$router.push('/login')

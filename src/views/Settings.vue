@@ -25,8 +25,17 @@
         <!-- Payment details -->
         <div class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9">
 
+          <!-- Empty state -->
+          <div class="mt-12 text-center">
+            <AdjustmentsIcon class="mx-auto h-12 w-12 text-gray-400" />
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No payment plans yet</h3>
+            <p class="mt-1 text-sm text-gray-500">
+              Watch this space?
+            </p>
+          </div>
+
           <!-- Plan -->
-          <section aria-labelledby="plan-heading">
+          <section class="hidden" aria-labelledby="plan-heading">
             <form action="#" @submit.prevent="getManageLink">
               <div class="shadow sm:rounded-md sm:overflow-hidden">
                 <div class="bg-white py-6 px-4 space-y-6 sm:p-6">
@@ -81,6 +90,7 @@ import {
   RadioGroupOption,
 } from '@headlessui/vue'
 import {
+  AdjustmentsIcon,
   BellIcon,
   CogIcon,
   CreditCardIcon,
@@ -96,6 +106,7 @@ const apiRoot = import.meta.env.VITE_API_URL
 
 export default defineComponent({
   components: {
+    AdjustmentsIcon,
     RadioGroup,
     RadioGroupDescription,
     RadioGroupLabel,

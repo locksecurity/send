@@ -210,6 +210,9 @@ export default defineComponent({
 
   computed: {
     noActiveSubscription() {
+      // hiding subscriptions for now.
+      return false
+
       const session = (<any>this).session
       if (!session || !session.subscription) {
         return true
