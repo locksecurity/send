@@ -118,7 +118,7 @@
 
     <slot/>
 
-    <nav class="fixed bottom-0 left-0 block w-full bg-white p-4 shadow-md shadow-black md:hidden">
+    <nav class="hidden fixed bottom-0 left-0 block w-full bg-white p-4 shadow-md shadow-black md:hidden">
       <div class="w-full text-center text-xl">Bottom menu here</div>
     </nav>
   </div>
