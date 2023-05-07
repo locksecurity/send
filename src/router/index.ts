@@ -31,6 +31,12 @@ const router = createRouter({
       component: () => import('../views/Settings.vue')
     },
     {
+      path: '/tests',
+      name: 'tests',
+      meta: { requiresAuth: true },
+      component: () => import('../views/Experimenting.vue')
+    },
+    {
       path: '/register',
       name: 'register',
       meta: { layout: 'auth', guestOnly: true },

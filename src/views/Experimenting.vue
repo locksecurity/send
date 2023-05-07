@@ -167,7 +167,7 @@ import { LockClosedIcon } from '@heroicons/vue/solid'
 import getFileSize from 'filesize'
 import * as filenc from '@/crypto/fileenc'
 import * as api from '@/api'
-import { sliceStream, StreamSlicer } from '@/streans'
+import { StreamSlicer, CryptoTransform } from '@/streans'
 import CircularProgressBar from '@/components/CircularProgressBar.vue'
 import LoadableButton from '@/components/LoadableButton.vue'
 import { copyToClipboard } from '@/copy'
@@ -260,26 +260,14 @@ export default defineComponent({
         return
       }
 
-      const reader = (await filenc.blobToArrayBuffer(file)).target
-
-      if (!reader) {
-        notifier().warning(
-          'There was a problem uploading your file',
-          'Please check and try again.'
-        )
-
-        this.working = false
-        return
-      }
-
 
       const prep = await this.prepareUpload()
 
       // encrypt file
-      const encrytedFile = await filenc.encryptFile(
-        <ArrayBuffer>reader.result,
-        prep.file.key
-      )
+      // const encrytedFile = await filenc.encryptFile(
+      //   <ArrayBuffer>reader.result,
+      //   prep.file.key
+      // )
 
       // encrypt metadata
       const encoder = new TextEncoder()
@@ -295,7 +283,7 @@ export default defineComponent({
       // initialize upload
       const init = await this.registerUpload({
         signingKey: prep.signingKey,
-        file: { salt: prep.file.salt, iv: encrytedFile.iv },
+        file: { salt: prep.file.salt, iv: new Uint8Array(12) },
         meta: {
           salt: prep.meta.salt,
           iv: encryptedMeta.iv,
@@ -309,12 +297,19 @@ export default defineComponent({
         return
       }
 
-      // upload encrypted file + meta using id
+      // slice file, encrypt & upload + meta using id
       const id = (await init.json()).id
 
-      //
-      const totalSize = encrytedFile.file.size
-      const encStream = sliceStream(encrytedFile.file.stream())
+      // TODO: update with total (encrypted) file size
+      const totalSize = file.size
+
+      // fileStream.pipeThrough(slicer).pipeThrough.(encrypter)
+      // pass result to WS
+      const writeReport = <Array<string>>[]
+
+      const encStream = file.stream()
+        .pipeThrough(new TransformStream(new StreamSlicer()))
+        .pipeThrough(new TransformStream(new CryptoTransform(prep.file.key)))
 
       try {
         this.uploadRequest = api.uploadWs(

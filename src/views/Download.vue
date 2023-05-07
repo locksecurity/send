@@ -51,6 +51,7 @@
 import { defineComponent } from 'vue'
 import getFileSize from 'filesize'
 import SimpleSpinner from '@/components/SimpleSpinner.vue'
+import { getDownloader } from '@/lib/downloaders'
 import * as filenc from '@/crypto/fileenc'
 import LoadableButton from '@/components/LoadableButton.vue'
 import notifier from '@/notifications'
@@ -168,57 +169,67 @@ export default defineComponent({
       )
 
       this.downloading = true
-      fetch(`${apiRoot}/downloads/${this.uploadId}`, {
+      const response = await fetch(`${apiRoot}/downloads/${this.uploadId}`, {
         headers: { Authorization: 'Bearer ' + this.authToken }
       })
-        .then(response => {
-          if (!response.ok) {
-            notifier().warning(
-              'We couldn\'t start your download',
-              'Please try again in a few minutes.'
-            )
 
-            this.downloading = false
-            return
-          }
-          return response.blob()
-        })
-        .then(blob => {
-          return filenc.decryptFile(
-            <Blob>blob,
-            fileKey,
-            Uint32Array.from(this.file.iv)
-          )
-        })
-        .then(file => {
-          const link = document.createElement('a')
+      if (!response.ok) {
+        notifier().warning(
+          'We couldn\'t start your download',
+          'Please try again in a few minutes.'
+        )
 
-          link.style.display = 'none'
-          link.href = URL.createObjectURL(file)
-          link.download = this.meta?.name as string
+        this.downloading = false
+        return
+      }
 
-          // It needs to be added to the DOM so it can be clicked
-          document.body.appendChild(link)
-          link.click()
+      let writable: WritableStream|undefined = undefined
+      if ((<any>window).showSaveFilePicker) {
+        try {
+          const options = { suggestedName: this.meta?.name }
+          const handle = await (<any>window).showSaveFilePicker(options)
+    console.log({ handle })
+          writable = handle.createWritable()
+        } catch (e) {
+          // same as all good
+        }
+      }
 
-          // To make this work on Firefox we need to wait
-          // a little while before removing it.
-          setTimeout(() => {
-            URL.revokeObjectURL(link.href)
-            link.parentNode?.removeChild(link)
-          }, 5000)
+      await getDownloader(await writable).download(
+        response,
+        fileKey,
+        this.meta?.name
+      )
 
-          this.downloading = false
-        })
-        .catch(e => {
-          notifier().error(
-            'We couldn\'t download your file.',
-            'Please try again.'
-          )
+      this.downloading = false
+      // ({
 
-          this.downloading = false
-          console.error(e)
-        })
+          // return filenc.decryptFile(
+          //   <Blob>blob,
+          //   fileKey,
+          //   Uint32Array.from(this.file.iv)
+          // )
+        // })
+        // .then(file => {
+        //   const link = document.createElement('a')
+
+        //   link.style.display = 'none'
+        //   link.href = URL.createObjectURL(file)
+        //   link.download = this.meta?.name as string
+
+        //   // It needs to be added to the DOM so it can be clicked
+        //   document.body.appendChild(link)
+        //   link.click()
+
+        //   // To make this work on Firefox we need to wait
+        //   // a little while before removing it.
+        //   setTimeout(() => {
+        //     URL.revokeObjectURL(link.href)
+        //     link.parentNode?.removeChild(link)
+        //   }, 5000)
+
+        //   this.downloading = false
+        // })
     },
 
     getFileSize: (bytes: number) => getFileSize(bytes)
