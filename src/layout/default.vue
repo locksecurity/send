@@ -138,6 +138,7 @@ import { auth } from '@/auth/firebase'
 const navigation = [
   { name: 'upload', href: '/', },
   { name: 'settings', href: '/settings' },
+  { name: 'tests', href: '/tests' },
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
