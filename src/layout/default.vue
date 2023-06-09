@@ -64,8 +64,8 @@
             <!-- Mobile menu button -->
             <DisclosureButton class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span class="sr-only">Open main menu</span>
-              <MenuIcon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
-              <XIcon v-else class="block h-6 w-6" aria-hidden="true" />
+              <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
+              <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
             </DisclosureButton>
           </div>
         </div>
@@ -129,14 +129,15 @@
 <script lang="ts" setup>
 import { RouterLink } from 'vue-router'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
+import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import TLogo from '@/components/TLogo.vue'
 import LiveNotificationRegion from '@/components/Notifications/LiveRegion.vue'
 import { useAuthStore } from '../stores/auth'
 import { auth } from '@/auth/firebase'
 
 const navigation = [
-  { name: 'upload', href: '/', },
+  { name: 'dashboard', href: '/', },
+  { name: 'send', href: '/send', },
   { name: 'settings', href: '/settings' },
   { name: 'tests', href: '/tests' },
 ]
