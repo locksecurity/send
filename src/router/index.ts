@@ -19,6 +19,12 @@ const router = createRouter({
       component: Dashboard
     },
     {
+      path: '/send',
+      name: 'send',
+      meta: { requiresAuth: true },
+      component: () => import('../views/Upload.vue')
+    },
+    {
       path: '/plans/choose',
       name: 'choose-plan',
       meta: { requiresAuth: true },

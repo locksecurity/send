@@ -15,7 +15,7 @@
     "@firebase/app": "^0.7.30",
     "@firebase/auth": "^0.20.5",
     "@headlessui/vue": "^1.6.2",
-    "@heroicons/vue": "^1.0.6",
+    "@heroicons/vue": "^2.0.18",
     "@sentry/tracing": "^7.12.1",
     "@sentry/vue": "^7.12.1",
     "filesize": "^9.0.11",

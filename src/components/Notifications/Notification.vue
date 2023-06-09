@@ -27,11 +27,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/outline'
-import { XIcon } from '@heroicons/vue/solid'
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+import { XMarkIcon } from '@heroicons/vue/20/solid'
 
 export default defineComponent({
-  components: { CheckCircleIcon, ExclamationCircleIcon, XIcon },
+  components: { CheckCircleIcon, ExclamationCircleIcon, XMarkIcon },
 
   props: {
     status: { type: String, required: true },
