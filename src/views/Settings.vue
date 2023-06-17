@@ -27,7 +27,7 @@
 
           <!-- Empty state -->
           <div class="mt-12 text-center">
-            <AdjustmentsIcon class="mx-auto h-12 w-12 text-gray-400" />
+            <AdjustmentsVerticalIcon class="mx-auto h-12 w-12 text-gray-400" />
             <h3 class="mt-2 text-sm font-medium text-gray-900">No payment plans yet</h3>
             <p class="mt-1 text-sm text-gray-500">
               Watch this space?
@@ -90,14 +90,14 @@ import {
   RadioGroupOption,
 } from '@headlessui/vue'
 import {
-  AdjustmentsIcon,
-  BellIcon,
-  CogIcon,
+  AdjustmentsVerticalIcon,
+//  BellIcon,
+//  CogIcon,
   CreditCardIcon,
-  KeyIcon,
-  UserCircleIcon,
-  ViewGridAddIcon,
-} from '@heroicons/vue/outline'
+//  KeyIcon,
+//  UserCircleIcon,
+//  ViewGridAddIcon,
+} from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/stores/auth'
 import notifier from '@/notifications'
 import LoadableButton from '@/components/LoadableButton.vue'
@@ -106,7 +106,7 @@ const apiRoot = import.meta.env.VITE_API_URL
 
 export default defineComponent({
   components: {
-    AdjustmentsIcon,
+    AdjustmentsVerticalIcon,
     RadioGroup,
     RadioGroupDescription,
     RadioGroupLabel,
