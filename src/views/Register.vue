@@ -24,42 +24,68 @@
       <div class="py-8 px-4 sm:rounded-lg sm:px-10">
         <form
           @submit.prevent="register"
-          class="space-y-6"
           action="#"
           method="POST"
         >
           <div>
-            <label for="nickname" class="block text-sm font-medium text-gray-700">
-              What should we call you?
-            </label>
-            <div class="mt-1">
-              <input v-model="nickname" id="nickname" name="nickname" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Jane" />
+            <span class="block text-xs text- font-medium text-gray-600">
+              Recommended
+            </span>
+            <button type="button" @click="registerWithGoogle" class="mt-1 w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+              <google-icon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+              Sign in with Google
+            </button>
+          </div>
+
+          <div v-show="!usingEmail" class="mt-12">
+            <button type="button" @click="usingEmail = true" class="transition duration-200 text-sm font-medium text-slate-700 hover:text-slate-900">
+              Or continue with email &rarr;
+            </button>
+          </div>
+
+          <div v-show="usingEmail" class="relative my-10">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t border-gray-300" />
+            </div>
+            <div class="relative flex justify-center">
+              <span class="bg-white px-2 text-sm text-gray-500">Or continue with email</span>
             </div>
           </div>
 
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">
-              Your email address
-            </label>
-            <div class="mt-1">
-              <input v-model="email" id="email" name="email" type="email" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+          <fieldset v-show="usingEmail" :id="emailSignupId" class="space-y-6">
+            <div>
+              <label for="nickname" class="block text-sm font-medium text-gray-700">
+                What should we call you?
+              </label>
+              <div class="mt-1">
+                <input v-model="nickname" id="nickname" name="nickname" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Jane" />
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">
-              Choose a Password
-            </label>
-            <div class="mt-1">
-              <input v-model="password" type="password" id="password" name="password" required minlength="8" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="at least 8 characters long" />
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">
+                Your email address
+              </label>
+              <div class="mt-1">
+                <input v-model="email" id="email" name="email" type="email" autocomplete="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+              </div>
             </div>
-          </div>
 
-          <div>
-            <LoadableButton type="submit" :loading="submitting" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-              Continue
-            </LoadableButton>
-          </div>
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700">
+                Choose a Password
+              </label>
+              <div class="mt-1">
+                <input v-model="password" type="password" id="password" name="password" required minlength="12" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="at least 12 characters long" />
+              </div>
+            </div>
+
+            <div>
+              <LoadableButton type="submit" :loading="submitting" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Continue
+              </LoadableButton>
+            </div>
+          </fieldset>
         </form>
 
       </div>
@@ -69,19 +95,24 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import GoogleIcon from '@/components/icons/GoogleIcon.vue'
 import TLogo from '@/components/TLogo.vue'
 import LoadableButton from '@/components/LoadableButton.vue'
 import notifier from '@/notifications'
 import { signInWithEmailAndPassword } from '@firebase/auth'
 import { auth } from '@/auth/firebase'
+import { googleOauthCallback, startGoogleOauth } from '@/auth/googleSignIn'
 
 const apiRoot = import.meta.env.VITE_API_URL
 
 export default defineComponent({
-    components: { TLogo, LoadableButton },
+    components: { GoogleIcon, TLogo, LoadableButton },
 
     data() {
       return {
+        emailSignupId: 'emailSignup',
+        usingEmail: false,
+
         email: '',
         nickname: '',
         password: '',
@@ -90,12 +121,14 @@ export default defineComponent({
       }
     },
 
+    async created() {
+      await googleOauthCallback(this.$router)
+    },
+
     methods: {
 
       async register() {
         this.submitting = true
-
-        const apiRoot = import.meta.env.VITE_API_URL
 
         const response = await fetch(`${apiRoot}/auth/register`, {
           method: 'post',
@@ -131,6 +164,28 @@ export default defineComponent({
         )
       },
 
+      async registerWithGoogle() {
+        startGoogleOauth()
+          /*.then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result)
+            const token = credential?.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+            // IdP data available using getAdditionalUserInfo(result)
+            // ...
+            console.log({ credential, token, user })
+          }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+          });*/
+      }
     }
 })
 
