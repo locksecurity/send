@@ -54,7 +54,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      meta: { layout: 'auth', guestOnly: true },
+      meta: { layout: 'auth' },
       component: () => import('../views/Login.vue')
     },
   ]
@@ -84,7 +84,7 @@ router.beforeEach((to, from, next) => {
       }
 
       if (requiresAuth && !someonesLoggedIn) {
-        return next('/login')
+        return next('/register')
       }
 
       return next();
