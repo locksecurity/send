@@ -7,7 +7,11 @@
     <body class="h-full">
     ```
   -->
-  <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div v-if="loading" className="w-full h-screen pt-48 bg-gray-50 flex justify-center">
+    <SimpleSpinner class="!h-10 !w-auto !text-gray-700" />
+  </div>
+
+  <div v-else class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <TLogo class="mx-auto h-12 w-auto text-blue-500" alt="Locksend"></TLogo>
       <h2 class="mt-6 text-center text-2xl font-bold text-gray-900">
@@ -23,7 +27,26 @@
 <!-- Email, phone, name, nickname -->
     <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="px-4 sm:rounded-lg sm:px-10">
+        <div>
+          <span class="block text-xs text- font-medium text-gray-600">
+            Recommended
+          </span>
+          <button type="button" @click="loginWithGoogle" class="mt-1 w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+            <google-icon class="-ml-0.5 h-5 w-5" aria-hidden="true" />
+            Sign in with Google
+          </button>
+        </div>
+
+        <div class="my-8 relative">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true">
+            <div class="w-full border-t border-gray-300" />
+          </div>
+          <div class="relative flex justify-center">
+            <span class="bg-white px-2 text-sm text-gray-500">Or continue with email</span>
+          </div>
+        </div>
         <form class="space-y-6" @submit.prevent="tryLogin" method="POST" action="#">
+
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700">
               Email address
@@ -64,18 +87,21 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { signInWithEmailAndPassword } from '@firebase/auth'
-import { auth } from '@/auth/firebase'
+import { auth, getCurrentUser } from '@/auth/firebase'
 import notifier from '@/notifications'
-import ButtonSpinner from '@/components/SimpleSpinner.vue'
+import GoogleIcon from '@/components/icons/GoogleIcon.vue'
+import SimpleSpinner from '@/components/SimpleSpinner.vue'
 import TLogo from '@/components/TLogo.vue'
 import type { FirebaseError } from '@firebase/util';
 import LoadableButton from '../components/LoadableButton.vue';
+import { googleOauthCallback, startGoogleOauth } from '@/auth/googleSignIn';
 
 export default defineComponent({
-  components: { ButtonSpinner, TLogo, LoadableButton },
+  components: { SimpleSpinner, GoogleIcon, TLogo, LoadableButton },
 
   data() {
     return {
+      loading: true,
       submitting: false,
 
       email: '',
@@ -83,7 +109,26 @@ export default defineComponent({
     };
   },
 
+  async created() {
+    const isSigninRedirect = await googleOauthCallback(this.$router)
+    if (isSigninRedirect) {
+      return
+    }
+
+    const user = await getCurrentUser()
+    if (user) {
+      this.$router.push('/')
+      return
+    }
+
+    this.loading = false
+  },
+
   methods: {
+    loginWithGoogle() {
+      startGoogleOauth()
+    },
+
     async tryLogin() {
       this.submitting = true
 

@@ -7,6 +7,9 @@
     <body class="h-full">
     ```
   -->
+  <div v-if="loading" className="w-full h-screen pt-48 bg-gray-50 flex justify-center">
+    <SimpleSpinner class="!h-10 !w-auto !text-gray-700" />
+  </div>
   <div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <TLogo class="mx-auto h-12 w-auto text-blue-500" alt="Locksend"></TLogo>
@@ -97,96 +100,89 @@
 import { defineComponent } from 'vue'
 import GoogleIcon from '@/components/icons/GoogleIcon.vue'
 import TLogo from '@/components/TLogo.vue'
+import SimpleSpinner from '@/components/SimpleSpinner.vue'
 import LoadableButton from '@/components/LoadableButton.vue'
 import notifier from '@/notifications'
 import { signInWithEmailAndPassword } from '@firebase/auth'
-import { auth } from '@/auth/firebase'
+import { auth, getCurrentUser } from '@/auth/firebase'
 import { googleOauthCallback, startGoogleOauth } from '@/auth/googleSignIn'
 
 const apiRoot = import.meta.env.VITE_API_URL
 
 export default defineComponent({
-    components: { GoogleIcon, TLogo, LoadableButton },
+  components: { GoogleIcon, LoadableButton, SimpleSpinner, TLogo },
 
-    data() {
-      return {
-        emailSignupId: 'emailSignup',
-        usingEmail: false,
+  data() {
+    return {
+      loading: true,
+      emailSignupId: 'emailSignup',
+      usingEmail: false,
 
-        email: '',
-        nickname: '',
-        password: '',
+      email: '',
+      nickname: '',
+      password: '',
 
-        submitting: false,
-      }
-    },
-
-    async created() {
-      await googleOauthCallback(this.$router)
-    },
-
-    methods: {
-
-      async register() {
-        this.submitting = true
-
-        const response = await fetch(`${apiRoot}/auth/register`, {
-          method: 'post',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            nickname: this.nickname,
-            email: this.email,
-            password: this.password
-          })
-        })
-
-        if (response.ok) {
-          try {
-            await signInWithEmailAndPassword(auth, this.email, this.password)
-
-            notifier().success(
-              'You\'re all signed up',
-              'Happy encrypting!'
-            )
-            this.$router.push('/')
-          }
-          catch(error) {
-            this.$router.push('/login')
-          }
-          finally { return  }
-        }
-
-        this.submitting = false
-
-        return notifier().error(
-          'Something went wrong.',
-          'We couldn\'t sign you up then. Please try again.'
-        )
-      },
-
-      async registerWithGoogle() {
-        startGoogleOauth()
-          /*.then((result) => {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            const credential = GoogleAuthProvider.credentialFromResult(result)
-            const token = credential?.accessToken;
-            // The signed-in user info.
-            const user = result.user;
-            // IdP data available using getAdditionalUserInfo(result)
-            // ...
-            console.log({ credential, token, user })
-          }).catch((error) => {
-            // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.customData.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
-            // ...
-          });*/
-      }
+      submitting: false,
     }
+  },
+
+  async created() {
+    const isSigninRedirect = await googleOauthCallback(this.$router)
+    if (isSigninRedirect) {
+      return
+    }
+
+    const user = await getCurrentUser()
+    if (user) {
+      this.$router.push('/')
+      return
+    }
+
+    this.loading = false
+  },
+
+  methods: {
+    async register() {
+      this.submitting = true
+
+      const response = await fetch(`${apiRoot}/auth/register`, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nickname: this.nickname,
+          email: this.email,
+          password: this.password
+        })
+      })
+
+      if (response.ok) {
+        try {
+          await signInWithEmailAndPassword(auth, this.email, this.password)
+
+          notifier().success(
+            'You\'re all signed up',
+            'Happy encrypting!'
+          )
+          this.$router.push('/')
+        }
+        catch(error) {
+          this.$router.push('/login')
+        }
+        finally { return  }
+      }
+
+      this.submitting = false
+
+      return notifier().error(
+        'Something went wrong.',
+        'We couldn\'t sign you up then. Please try again.'
+      )
+    },
+
+    async registerWithGoogle() {
+      startGoogleOauth()
+    }
+  }
 })
 
 </script>
