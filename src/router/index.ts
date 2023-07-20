@@ -57,6 +57,12 @@ const router = createRouter({
       meta: { layout: 'auth' },
       component: () => import('../views/Login.vue')
     },
+    {
+      path: '/templates/new',
+      name: 'new-template',
+      meta: { requiresAuth: true },
+      component: () => import('../views/CreateTemplate/CreateTemplate.vue')
+    },
   ]
 })
 
