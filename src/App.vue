@@ -10,7 +10,7 @@
 import { defineComponent } from 'vue'
 import { RouterView } from 'vue-router'
 import DefaultLayout from './layout/default.vue'
-import AuthLayout from './layout/auth.vue'
+import UserLayout from './layout/user.vue'
 import AuthenticatedView from './AuthenticatedView.vue'
 import { auth } from './auth/firebase'
 import { useAuthStore } from './stores/auth'
@@ -18,9 +18,9 @@ import { useAuthStore } from './stores/auth'
 export default defineComponent({
   components: {
     RouterView,
-    AuthLayout,
     DefaultLayout,
-    AuthenticatedView
+    AuthenticatedView,
+    UserLayout
   },
 
   computed: {

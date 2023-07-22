@@ -9,43 +9,43 @@ const router = createRouter({
     {
       path: '/download/:id',
       name: 'download',
-      meta: { requiresAuth: false, layout: 'auth' },
+      meta: { requiresAuth: false },
       component: Download
     },
     {
       path: '/',
       name: 'dashboard',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, layout: 'user' },
       component: Dashboard
     },
     {
       path: '/send',
       name: 'send',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, layout: 'user' },
       component: () => import('../views/Upload.vue')
     },
     {
       path: '/plans/choose',
       name: 'choose-plan',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, layout: 'user' },
       component: () => import('../views/ChoosePlan.vue')
     },
     {
       path: '/settings',
       name: 'settings',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, layout: 'user' },
       component: () => import('../views/Settings.vue')
     },
     {
       path: '/tests',
       name: 'tests',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, layout: 'user' },
       component: () => import('../views/Experimenting.vue')
     },
     {
       path: '/register',
       name: 'register',
-      meta: { layout: 'auth', },
+      meta: { layout: 'default', },
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -54,13 +54,13 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      meta: { layout: 'auth' },
+      meta: { layout: 'default' },
       component: () => import('../views/Login.vue')
     },
     {
       path: '/templates/new',
       name: 'new-template',
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, layout: 'user' },
       component: () => import('../views/CreateTemplate/CreateTemplate.vue')
     },
   ]
