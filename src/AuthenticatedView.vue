@@ -13,13 +13,14 @@ import { RouterView } from 'vue-router'
 import { computed, defineComponent } from 'vue'
 import { auth, getCurrentUser } from './auth/firebase'
 import DefaultLayout from '@/layout/default.vue'
+import UserLayout from '@/layout/user.vue'
 import SimpleSpinner from './components/SimpleSpinner.vue'
 // import { $fetch } from './api-client'
 
 const apiRoot = import.meta.env.VITE_API_URL
 
 export default defineComponent({
-  components: { RouterView, DefaultLayout, SimpleSpinner },
+  components: { RouterView, DefaultLayout, SimpleSpinner, UserLayout },
   props: {
     layout: {
       required: true,
