@@ -13,13 +13,17 @@ import { api } from '@/api'
  *
  * @returns {void}
  */
-export function startGoogleOauth() {
+export function startGoogleOauth(email?: string) {
   const provider = new GoogleAuthProvider()
   const scopes = [
     'https://www.googleapis.com/auth/userinfo.profile',
     'https://www.googleapis.com/auth/userinfo.email'
   ]
   scopes.forEach(scope => provider.addScope(scope))
+
+  if (email && String(email).length) {
+    provider.setCustomParameters({ login_hint: email })
+  }
 
   signInWithRedirect(auth, provider)
 }
@@ -50,7 +54,9 @@ export async function googleOauthCallback(router: Router) {
         provider: info?.providerId
       })
     })
-  } catch(e) {}
+  } catch(e) {
+    //
+  }
 
   router.push('/')
 
