@@ -29,7 +29,7 @@ module.exports = {
      */
     {
       "files": [ "*.vue" ],
-      "rules": [ "no-undef": "off" ]
+      "rules": { "no-undef": "off" }
     }
   ]
 }
