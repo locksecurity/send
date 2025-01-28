@@ -169,37 +169,45 @@ export default defineComponent({
       )
 
       this.downloading = true
-      const response = await fetch(`${apiRoot}/downloads/${this.uploadId}`, {
-        headers: { Authorization: 'Bearer ' + this.authToken }
-      })
 
-      if (!response.ok) {
-        notifier().warning(
-          'We couldn\'t start your download',
-          'Please try again in a few minutes.'
-        )
-
-        this.downloading = false
-        return
+      const source = async () => {
+        try {
+          return fetch(`${apiRoot}/downloads/${this.uploadId}`, {
+            headers: { Authorization: 'Bearer ' + this.authToken }
+          })
+            .then(res => res.ok ? res.body : null)
+            .catch(() => null)
+        }
+        catch {
+          return null
+        }
       }
 
-      let writable: WritableStream|undefined = undefined
+      let writable: WritableStream | undefined = undefined
       if ((<any>window).showSaveFilePicker) {
         try {
           const options = { suggestedName: this.meta?.name }
           const handle = await (<any>window).showSaveFilePicker(options)
-    console.log({ handle })
-          writable = handle.createWritable()
+
+          writable = await handle.createWritable()
         } catch (e) {
           // same as all good
         }
       }
 
-      await getDownloader(await writable).download(
-        response,
-        fileKey,
-        this.meta?.name
-      )
+      try {
+        await getDownloader(await writable).download(
+          source,
+          fileKey,
+          this.meta?.name
+        )
+      }
+      catch {
+        notifier().warning(
+          'We couldn\'t download your file',
+          'Please try again in a few minutes.'
+        )
+      }
 
       this.downloading = false
       // ({
