@@ -22,7 +22,7 @@ const router = createRouter({
       path: '/send',
       name: 'send',
       meta: { requiresAuth: true, layout: 'user' },
-      component: () => import('../views/Upload.vue')
+      component: () => import('../views/Experimenting.vue')
     },
     {
       path: '/plans/choose',
@@ -30,18 +30,12 @@ const router = createRouter({
       meta: { requiresAuth: true, layout: 'user' },
       component: () => import('../views/ChoosePlan.vue')
     },
-    {
-      path: '/settings',
-      name: 'settings',
-      meta: { requiresAuth: true, layout: 'user' },
-      component: () => import('../views/Settings.vue')
-    },
-    {
-      path: '/tests',
-      name: 'tests',
-      meta: { requiresAuth: true, layout: 'user' },
-      component: () => import('../views/Experimenting.vue')
-    },
+    // {
+    //   path: '/settings',
+    //   name: 'settings',
+    //   meta: { requiresAuth: true, layout: 'user' },
+    //   component: () => import('../views/Settings.vue')
+    // },
     {
       path: '/register',
       name: 'register',
