@@ -21,13 +21,13 @@ function arrayBufferToBlob(ab: ArrayBuffer): Blob {
 }
 
 export function base64ToArrayBuffer(base64: string) {
-    var binary_string = window.atob(base64);
-    var len = binary_string.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-        bytes[i] = binary_string.charCodeAt(i);
-    }
-    return bytes.buffer;
+  const binary_string = window.atob(base64);
+  const len = binary_string.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+      bytes[i] = binary_string.charCodeAt(i);
+  }
+  return bytes.buffer;
 }
 
 // source: https://gist.github.com/jonleighton/958841
@@ -142,8 +142,7 @@ export async function encrypt(input: ArrayBuffer, key: CryptoKey) {
 export async function decryptFile(file: Blob, key: CryptoKey, iv: ArrayBuffer) {
 console.log('before: ', await file.arrayBuffer())
   const cipher = (await blobToArrayBuffer(file)).target?.result
-console.log(key)
-console.log(cipher)
+
   return window.crypto.subtle.decrypt(
     { name: 'AES-GCM', iv }, key, <ArrayBuffer>cipher
   )

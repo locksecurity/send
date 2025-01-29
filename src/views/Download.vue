@@ -172,35 +172,19 @@ export default defineComponent({
 
       const source = async () => {
         try {
-          return fetch(`${apiRoot}/downloads/${this.uploadId}`, {
+          const download = await fetch(`${apiRoot}/downloads/${this.uploadId}`, {
             headers: { Authorization: 'Bearer ' + this.authToken }
           })
-            .then(res => res.ok ? res.body : null)
-            .catch(() => null)
+          return download.ok ? download.body : null
         }
         catch {
           return null
         }
       }
 
-      let writable: WritableStream | undefined = undefined
-      if ((<any>window).showSaveFilePicker) {
-        try {
-          const options = { suggestedName: this.meta?.name }
-          const handle = await (<any>window).showSaveFilePicker(options)
-
-          writable = await handle.createWritable()
-        } catch (e) {
-          // same as all good
-        }
-      }
-
       try {
-        await getDownloader(await writable).download(
-          source,
-          fileKey,
-          this.meta?.name
-        )
+        await (await getDownloader(this.meta?.name || '')).download(source, fileKey)
+        // success message?
       }
       catch {
         notifier().warning(
@@ -210,34 +194,6 @@ export default defineComponent({
       }
 
       this.downloading = false
-      // ({
-
-          // return filenc.decryptFile(
-          //   <Blob>blob,
-          //   fileKey,
-          //   Uint32Array.from(this.file.iv)
-          // )
-        // })
-        // .then(file => {
-        //   const link = document.createElement('a')
-
-        //   link.style.display = 'none'
-        //   link.href = URL.createObjectURL(file)
-        //   link.download = this.meta?.name as string
-
-        //   // It needs to be added to the DOM so it can be clicked
-        //   document.body.appendChild(link)
-        //   link.click()
-
-        //   // To make this work on Firefox we need to wait
-        //   // a little while before removing it.
-        //   setTimeout(() => {
-        //     URL.revokeObjectURL(link.href)
-        //     link.parentNode?.removeChild(link)
-        //   }, 5000)
-
-        //   this.downloading = false
-        // })
     },
 
     getFileSize: (bytes: number) => getFileSize(bytes)
