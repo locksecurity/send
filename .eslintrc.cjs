@@ -13,14 +13,6 @@ module.exports = {
     "vue/setup-compiler-macros": true
   },
   "overrides": [
-    {
-      "files": [
-        "cypress/integration/**.spec.{js,ts,jsx,tsx}"
-      ],
-      "extends": [
-        "plugin:cypress/recommended"
-      ]
-    },
     /**
      * Turn off eslint's default "no-undef" 'cause we're using Typescript.
      * The checks it provides are already handled by Typescript, and then some.
