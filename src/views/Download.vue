@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import getFileSize from 'filesize'
+import { filesize as getFileSize } from 'filesize'
 import SimpleSpinner from '@/components/SimpleSpinner.vue'
 import { getDownloader } from '@/lib/downloaders'
 import * as filenc from '@/crypto/fileenc'

@@ -168,7 +168,7 @@ import {
   XMarkIcon as XIcon
 } from '@heroicons/vue/24/outline'
 import { LockClosedIcon } from '@heroicons/vue/24/solid'
-import getFileSize from 'filesize'
+import { filesize as getFileSize } from 'filesize'
 import * as filenc from '@/crypto/fileenc'
 import * as api from '@/api'
 import { StreamSlicer, CryptoTransform } from '@/streans'
