@@ -15,14 +15,14 @@
       </button>
 
     </summary>
-    <div class="mt-2 p-4 bg-white rounded-md shadow grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6" :class="{ 'mb-20': open }">
+    <div class="mt-2 p-4 bg-white rounded-md shadow-sm grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6" :class="{ 'mb-20': open }">
       <div class="sm:col-span-3 space-y-6">
         <div>
           <label :id="`title-${idx}-id`" class="block text-sm font-medium leading-6 text-gray-900">
             Title
           </label>
           <div class="mt-2">
-            <input required v-model="value.title" type="text" :name="`title-${idx}`" :id="`title-${idx}-id`" autocomplete="on" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
+            <input required v-model="value.title" type="text" :name="`title-${idx}`" :id="`title-${idx}-id`" autocomplete="on" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
           </div>
         </div>
 
@@ -33,7 +33,7 @@
           <div class="mt-2">
             <div class="relative flex flex-wrap gap-x-3">
               <div class="flex h-6 items-center gap-x-2" v-for="(text, val) in formats" :key="val">
-                <input :id="`format-${val}-${idx}`" v-model="value.formats" type="checkbox" :name="`allowedFileFormats-${idx}`" class="h-4 w-4 rounded border-gray-300 cursor-pointer text-blue-600 focus:ring-blue-600" :value="val" />
+                <input :id="`format-${val}-${idx}`" v-model="value.formats" type="checkbox" :name="`allowedFileFormats-${idx}`" class="h-4 w-4 rounded-sm border-gray-300 cursor-pointer text-blue-600 focus:ring-blue-600" :value="val" />
                 <label :for="`format-${val}-${idx}`" class="cursor-pointer text-sm font-medium text-gray-900 uppercase">{{ text }}</label>
               </div>
             </div>
@@ -45,7 +45,7 @@
         <div>
           <label :for="`file-description-${idx}`" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
           <div class="mt-2">
-            <textarea v-model="value.description" :for="`file-description-${idx}`" :name="`file-description-${idx}`" rows="2" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" placeholder="Specific instructions on what file(s) to upload here" />
+            <textarea v-model="value.description" :for="`file-description-${idx}`" :name="`file-description-${idx}`" rows="2" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" placeholder="Specific instructions on what file(s) to upload here" />
           </div>
         </div>
       </div>

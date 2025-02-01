@@ -1,7 +1,7 @@
 <template>
   <button
     :disabled="loading"
-    :class="[loading ? '!bg-gray-300 cursor-progress' : null]"
+    :class="[loading ? 'bg-gray-300! cursor-progress' : null]"
   >
     <span v-if="loading" class="w-full flex items-center justify-center">
       <SimpleSpinner class="h-4 w-auto text-gray-700" />

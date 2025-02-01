@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <div class="flex items-center">
-            <router-link to="/" class="flex-shrink-0">
+            <router-link to="/" class="shrink-0">
               <TLogo class="block lg:hidden h-8 w-auto text-blue-500" alt="Locksend" />
               <TLogo class="hidden lg:block h-8 w-auto text-blue-500" alt="Locksend" />
             </router-link>
@@ -26,7 +26,7 @@
           </div>
           <div class="hidden sm:ml-6 sm:block">
             <div class="flex items-center">
-              <button type="button" class="hidden bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+              <button type="button" class="hidden bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                 <span class="sr-only">View notifications</span>
                 <BellIcon class="h-6 w-6" aria-hidden="true" />
               </button>
@@ -38,7 +38,7 @@
                     {{ user?.displayName || '' }}
                   </span>
 
-                  <MenuButton class="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                  <MenuButton class="bg-gray-800 flex text-sm rounded-full focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                     <span class="sr-only">Open user menu</span>
                     <span className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-indigo-800">
                       <span className="font-semibold leading-none text-white">
@@ -48,7 +48,7 @@
                   </MenuButton>
                 </div>
                 <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                  <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-hidden">
                     <!-- <MenuItem v-slot="{ active }">
                       <router-link to="/settings" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</router-link>
                     </MenuItem> -->
@@ -62,7 +62,7 @@
           </div>
           <div class="-mr-2 flex sm:hidden">
             <!-- Mobile menu button -->
-            <DisclosureButton class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+            <DisclosureButton class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-hidden focus:ring-2 focus:ring-inset focus:ring-white">
               <span class="sr-only">Open main menu</span>
               <Bars3Icon v-if="!open" class="block h-6 w-6" aria-hidden="true" />
               <XMarkIcon v-else class="block h-6 w-6" aria-hidden="true" />
@@ -87,7 +87,7 @@
         </div>
         <div class="pt-4 pb-3 border-t border-gray-700">
           <div class="flex items-center px-5">
-            <div class="flex-shrink-0">
+            <div class="shrink-0">
               <span class="inline-block h-10 w-10 rounded-full overflow-hidden bg-gray-100">
                 <svg class="h-full w-full text-gray-400" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -98,7 +98,7 @@
               <div class="text-base font-medium text-white">{{ user ? user.displayName : '' }}</div>
               <div class="text-sm font-medium text-gray-400">{{ user ? user.email : '' }}</div>
             </div>
-            <button type="button" class="hidden ml-auto flex-shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+            <button type="button" class="hidden ml-auto shrink-0 bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
               <span class="sr-only">View notifications</span>
               <BellIcon class="h-6 w-6" aria-hidden="true" />
             </button>

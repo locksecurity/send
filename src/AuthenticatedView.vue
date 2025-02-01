@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading" className="w-full h-screen pt-48 bg-gray-50 flex justify-center">
-    <SimpleSpinner class="!h-10 !w-auto !text-gray-700" />
+    <SimpleSpinner class="h-10! w-auto! text-gray-700!" />
   </div>
 
   <component :is="layout" v-else>

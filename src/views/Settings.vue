@@ -14,7 +14,7 @@
         <aside class="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
           <nav class="space-y-1">
             <a v-for="item in subNavigation" :key="item.name" :href="item.href" :class="[item.current ? 'bg-gray-50 text-blue-600 hover:bg-white' : 'text-gray-900 hover:text-gray-900 hover:bg-gray-50', 'group rounded-md px-3 py-2 flex items-center text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">
-              <component :is="item.icon" :class="[item.current ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500', 'flex-shrink-0 -ml-1 mr-3 h-6 w-6']" aria-hidden="true" />
+              <component :is="item.icon" :class="[item.current ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500', 'shrink-0 -ml-1 mr-3 h-6 w-6']" aria-hidden="true" />
               <span class="truncate">
                 {{ item.name }}
               </span>
@@ -37,7 +37,7 @@
           <!-- Plan -->
           <section class="hidden" aria-labelledby="plan-heading">
             <form action="#" @submit.prevent="getManageLink">
-              <div class="shadow sm:rounded-md sm:overflow-hidden">
+              <div class="shadow-sm sm:rounded-md sm:overflow-hidden">
                 <div class="bg-white py-6 px-4 space-y-6 sm:p-6">
                   <div>
                     <h2 id="plan-heading" class="text-lg leading-6 font-medium text-gray-900">Your Plan</h2>
@@ -47,7 +47,7 @@
                     <RadioGroupLabel class="sr-only"> Pricing plans </RadioGroupLabel>
                     <div class="relative bg-white rounded-md -space-y-px">
                       <RadioGroupOption as="template" v-for="(plan, planIdx) in plans" :key="plan.name" :value="plan" v-slot="{ checked, active }">
-                        <div :class="[planIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '', planIdx === plans.length - 1 ? 'rounded-bl-md rounded-br-md' : '', checked ? 'bg-blue-50 border-blue-200 z-10' : 'border-gray-200', 'relative border p-4 flex flex-col cursor-pointer md:pl-4 md:pr-6 md:grid md:grid-cols-3 focus:outline-none']">
+                        <div :class="[planIdx === 0 ? 'rounded-tl-md rounded-tr-md' : '', planIdx === plans.length - 1 ? 'rounded-bl-md rounded-br-md' : '', checked ? 'bg-blue-50 border-blue-200 z-10' : 'border-gray-200', 'relative border p-4 flex flex-col cursor-pointer md:pl-4 md:pr-6 md:grid md:grid-cols-3 focus:outline-hidden']">
                           <span class="flex items-center text-sm">
                             <span class="hidden" :class="[checked ? 'bg-blue-500 border-transparent' : 'bg-white border-gray-300', active ? 'ring-2 ring-offset-2 ring-gray-900' : '', 'h-4 w-4 rounded-full border flex items-center justify-center']" aria-hidden="true">
                               <span class="rounded-full bg-white w-1.5 h-1.5" />
@@ -67,7 +67,7 @@
 
                 </div>
                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                  <LoadableButton @click="getManageLink" :loading="working" type="button" class="bg-gray-800 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">
+                  <LoadableButton @click="getManageLink" :loading="working" type="button" class="bg-gray-800 border border-transparent rounded-md shadow-xs py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-gray-900 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">
                     Manage Plan
                   </LoadableButton>
                 </div>

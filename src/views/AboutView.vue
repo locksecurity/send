@@ -6,7 +6,7 @@
         <div>
           <label for="password" class="block text-base font-medium text-gray-400">Password</label>
           <div class="mt-1">
-            <input v-model="pass" type="text" name="password" id="password" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+            <input v-model="pass" type="text" name="password" id="password" class="shadow-xs focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
           </div>
         </div>
       </fieldset>

@@ -4,7 +4,7 @@
     <div v-if="show" class="max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden">
       <div class="p-4">
         <div class="flex items-start">
-          <div class="flex-shrink-0">
+          <div class="shrink-0">
             <CheckCircleIcon class="h-6 w-6 text-green-400" v-if="status === 'success'" aria-hidden="true" />
             <ExclamationCircleIcon class="h-6 w-6 text-yellow-500" v-if="status === 'warning'" aria-hidden="true" />
             <ExclamationCircleIcon class="h-6 w-6 text-red-500" v-if="status === 'error'" aria-hidden="true" />
@@ -13,8 +13,8 @@
             <p class="text-sm font-medium text-gray-900">{{ title }}</p>
             <p class="mt-1 text-sm text-gray-500" v-if="body && body.length">{{ body }}</p>
           </div>
-          <div class="ml-4 flex-shrink-0 flex">
-            <button type="button" @click="close" class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          <div class="ml-4 shrink-0 flex">
+            <button type="button" @click="close" class="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
               <span class="sr-only">Close</span>
               <XMarkIcon class="h-5 w-5" aria-hidden="true" />
             </button>

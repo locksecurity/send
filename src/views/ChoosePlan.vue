@@ -20,7 +20,7 @@
         <!-- Tiers -->
         <div class="max-w-2xl mx-auto px-4 space-y-12 sm:px-6 lg:max-w-7xl lg:space-y-0 lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
           <div class="hidden lg:block"></div>
-          <div v-for="tier in pricing.tiers" :key="tier.title" class="relative p-8 bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col">
+          <div v-for="tier in pricing.tiers" :key="tier.title" class="relative p-8 bg-white border border-gray-200 rounded-2xl shadow-xs flex flex-col">
             <div class="flex-1">
               <h3 class="text-xl font-semibold text-gray-900">{{ tier.title }}</h3>
               <p v-if="tier.mostPopular" class="absolute top-0 py-1.5 px-4 bg-blue-500 rounded-full text-sm font-semibold text-white transform -translate-y-1/2">Most popular</p>
@@ -33,7 +33,7 @@
               <!-- Feature list -->
               <ul role="list" class="mt-6 space-y-6">
                 <li v-for="feature in tier.features" :key="feature" class="flex">
-                  <CheckIcon class="flex-shrink-0 w-6 h-6 text-blue-500" aria-hidden="true" />
+                  <CheckIcon class="shrink-0 w-6 h-6 text-blue-500" aria-hidden="true" />
                   <span class="ml-3 text-gray-500">{{ feature }}</span>
                 </li>
               </ul>

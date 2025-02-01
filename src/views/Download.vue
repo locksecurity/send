@@ -19,9 +19,9 @@
         This file was shared using end-to-end encryption and a link that automatically expires.
       </p>
 
-      <div class="mt-12 rounded border border-gray-200">
+      <div class="mt-12 rounded-sm border border-gray-200">
         <div class="p-4">
-          <div class="w-full h-full flex items-center bg-white rounded p-2">
+          <div class="w-full h-full flex items-center bg-white rounded-sm p-2">
             <svg class="h-12 w-auto text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -36,7 +36,7 @@
       <div class="mt-12">
         <loadable-button
           :loading="downloading"
-          class="w-full py-3 rounded text-center bg-blue-700 text-gray-100 font-semibold"
+          class="w-full py-3 rounded-sm text-center bg-blue-700 text-gray-100 font-semibold"
           type="button"
           @click="downloadFile"
         >

@@ -11,7 +11,7 @@
         </p>
       </div>
       <div class="absolute inset-y-0 right-0 pt-1 pr-1 flex items-start sm:pt-1 sm:pr-2 sm:items-start">
-        <button type="button" class="flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white">
+        <button type="button" class="flex p-2 rounded-md hover:bg-indigo-500 focus:outline-hidden focus:ring-2 focus:ring-white">
           <span class="sr-only">Dismiss</span>
           <XIcon class="h-6 w-6 text-white" aria-hidden="true" />
         </button>
@@ -25,7 +25,7 @@
         <h2 class="text-lg md:text-2xl text-gray-800 font-semibold text-center">
           <!-- Share -->
         </h2>
-        <div class="mt-4 shadow sm:rounded-md sm:overflow-hidden">
+        <div class="mt-4 shadow-sm sm:rounded-md sm:overflow-hidden">
           <div class="px-4 py-5 bg-white sm:p-6">
             <div v-show="!showPreview && !(working || uploading || completed)">
               <label class="block text-sm font-medium text-gray-700">
@@ -37,7 +37,7 @@
                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                   <div class="flex text-gray-600">
-                    <div class="w-full relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                    <div class="w-full relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-hidden focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
                       <span>Choose a file</span>
                       <input ref="uploadArea" @change="changeFile" id="file-upload" name="file-upload" type="file" class="sr-only" />
                     </div>
@@ -50,8 +50,8 @@
 
             <div v-show="showPreview && !(uploading || completed)" id="previewArea" class="flex flex-col justify-between h-full" :class="{'pointer-none': working}">
               <div>
-                <div class="p-4 bg-gray-100 rounded">
-                  <div class="w-full h-full flex items-center bg-white rounded p-2">
+                <div class="p-4 bg-gray-100 rounded-sm">
+                  <div class="w-full h-full flex items-center bg-white rounded-sm p-2">
                     <svg class="h-12 w-auto text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
@@ -68,7 +68,7 @@
                 <div class="hidden mt-6">
                   <div class="relative flex items-start">
                     <div class="flex items-center h-5">
-                      <input onchange="toggleKeySection()" id="useKey" name="" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
+                      <input onchange="toggleKeySection()" id="useKey" name="" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded-sm">
                     </div>
                     <div class="ml-3 text-sm">
                       <label for="useKey" class="font-medium text-gray-200">Protect with password</label>
@@ -83,7 +83,7 @@
                 <div class="mt-4">
                   <LoadableButton
                     :loading="working"
-                    class="w-full py-3 inline-flex items-center justify-center rounded text-center text-gray-100 bg-blue-700 font-semibold"
+                    class="w-full py-3 inline-flex items-center justify-center rounded-sm text-center text-gray-100 bg-blue-700 font-semibold"
                     type="submit"
                   >
                     <LockClosedIcon class="w-5 h-auto mr-2" />
@@ -110,7 +110,7 @@
                   </p>
                 </div>
                 <div class="text-xs md:text-sm">
-                  <button type="button" @click="cancelUpload" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm font-medium rounded text-gray-700 bg-white md:px-3 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">Cancel</button>
+                  <button type="button" @click="cancelUpload" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-xs font-medium rounded-sm text-gray-700 bg-white md:px-3 hover:bg-gray-50 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">Cancel</button>
                 </div>
               </div>
             </div>
@@ -128,8 +128,8 @@
 
               <div class="mt-12">
                 <label for="download" class="block text-sm font-medium text-gray-700">Copy and share the link to send your file</label>
-                <div class="mt-1 flex rounded-md shadow-sm">
-                  <div class="relative flex items-stretch flex-grow focus-within:z-10">
+                <div class="mt-1 flex rounded-md shadow-xs">
+                  <div class="relative flex items-stretch grow focus-within:z-10">
                     <input
                       type="text"
                       id="download"
@@ -138,7 +138,7 @@
                       class="focus:ring-blue-500 focus:border-blue-500 block w-full rounded-none rounded-l-md border-gray-300"
                     />
                   </div>
-                  <button @click="copyDownloadLink" type="button" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                  <button @click="copyDownloadLink" type="button" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100 focus:outline-hidden focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                     <ClipboardCopyIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
                     <span>Copy</span>
                   </button>
