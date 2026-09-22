@@ -12,7 +12,7 @@ allowBuilds:
   workerd: true
 # blockExoticSubdeps: true # https://pnpm.io/settings#blockexoticsubdeps
 catalog:
-  hono: 4.12.27
+  hono: 4.13.5
 
 minimumReleaseAge: 5760 # no updates younger than 4 days
 onlyBuiltDependencies:

@@ -7,8 +7,8 @@ settings:
 catalogs:
   default:
     hono:
-      specifier: 4.12.27
-      version: 4.12.27
+      specifier: 4.13.5
+      version: 4.13.5
 
 importers:
 
@@ -25,7 +25,7 @@ importers:
     dependencies:
       hono:
         specifier: 'catalog:'
-        version: 4.12.27
+        version: 4.13.5
     devDependencies:
       '@types/node':
         specifier: 26.6.1
@@ -1695,8 +1695,8 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
 
-  hono@4.12.27:
-    resolution: {integrity: sha512-1yrb/+w6HWQJrUCLkJ2IF5jNIPvvFkblV5RNOYl6bV+OA6p9GLcMpHFFGTosSvHvcAUibuUukRqhlYI4z32C7Q==}
+  hono@4.13.5:
+    resolution: {integrity: sha512-O6+/eCYRkzzzy0rPWwKLiGBR1nFuUPZynnwjxN1MBA62NNqbT0wQEzQyK2gSO5yDIDB336sXQleAhOHrzlYyKw==}
     engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@4.0.0:
@@ -4050,7 +4050,7 @@ snapshots:
 
   he@1.2.0: {}
 
-  hono@4.12.27: {}
+  hono@4.13.5: {}
 
   html-encoding-sniffer@4.0.0:
     dependencies:
