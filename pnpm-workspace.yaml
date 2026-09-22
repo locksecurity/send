@@ -1,0 +1,25 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+allowBuilds:
+  '@clerk/shared': false
+  '@sentry/cli': false
+  esbuild: false
+  fs-xattr: false
+  lefthook: true
+  sharp: false
+  vue-demi: false
+  workerd: true
+# blockExoticSubdeps: true # https://pnpm.io/settings#blockexoticsubdeps
+catalog:
+  hono: 4.12.27
+
+minimumReleaseAge: 5760 # no updates younger than 4 days
+onlyBuiltDependencies:
+  - 'lefthook'
+
+# trustPolicy: no-downgrade
+# trustPolicyExclude:
+#   - 'eslint-import-resolver-typescript@3.10.1'
+#   - 'semver@6.3.1'
+#   - '@eslint/core@0.10.0'

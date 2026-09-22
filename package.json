@@ -1,50 +1,9 @@
 {
-  "name": "send",
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview --port 5050",
-    "test:unit": "vitest --environment jsdom",
-    "test:e2e": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress open'",
-    "test:e2e:ci": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress run'",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
-  },
-  "dependencies": {
-    "@firebase/app": "^0.10.18",
-    "@firebase/auth": "^1.8.2",
-    "@headlessui/vue": "^1.7.23",
-    "@heroicons/vue": "^2.2.0",
-    "@sentry/tracing": "^7.120.3",
-    "@sentry/vue": "^8.53.0",
-    "filesize": "^10.1.6",
-    "pinia": "^2.3.1",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
-  },
+  "private": true,
+  "scripts": {},
   "devDependencies": {
-    "@rushstack/eslint-patch": "^1.10.5",
-    "@tailwindcss/forms": "^0.5.10",
-    "@tailwindcss/postcss": "^4.0.0",
-    "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.13.0",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vue/eslint-config-prettier": "^10.2.0",
-    "@vue/eslint-config-typescript": "^14.3.0",
-    "@vue/test-utils": "^2.4.6",
-    "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.19.0",
-    "eslint-plugin-cypress": "^4.1.0",
-    "eslint-plugin-vue": "^9.32.0",
-    "jsdom": "^26.0.0",
-    "prettier": "^3.4.2",
-    "start-server-and-test": "^2.0.10",
-    "tailwindcss": "^4.0.2",
-    "typescript": "~5.7.3",
-    "vite": "^6.0.15",
-    "vitest": "^3.0.5",
-    "vue-tsc": "^2.2.0"
-  }
+    "lefthook": "2.1.9",
+    "oxfmt": "0.56.0"
+  },
+  "packageManager": "pnpm@10.33.3"
 }

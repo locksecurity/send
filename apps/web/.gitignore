@@ -11,11 +11,8 @@ node_modules
 .DS_Store
 dist
 dist-ssr
-dist-desktop
-out
 coverage
 *.local
-varlock-env.d.ts
 
 /cypress/videos/
 /cypress/screenshots/
